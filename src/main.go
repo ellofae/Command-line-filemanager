@@ -1,9 +1,13 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"main/cat"
 	"main/wc"
 	"os"
+	"strings"
+	"time"
 )
 
 var wrChannel = make(chan string, 5)
@@ -15,7 +19,19 @@ func main() {
 		return
 	}
 
+	ctx := context.Background()
+	ctx, closed := context.WithTimeout(ctx, time.Duration(4)*time.Second)
+	defer closed()
+
 	if arguments[1] == "wc" {
-		wc.RegularWc(wrChannel, os.Args[2])
+		wc.RegularWc(ctx, wrChannel, os.Args[2])
+	} else if arguments[1] == "cat" {
+		temp := strings.Split(arguments[2], ".")
+		if len(temp) == 2 {
+			cat.RegularCat(ctx, wrChannel, os.Args[2])
+			return
+		}
+
+		cat.OptionCat(ctx, wrChannel, os.Args[2:])
 	}
 }

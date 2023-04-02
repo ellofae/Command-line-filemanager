@@ -1,4 +1,4 @@
-package wc
+package cat
 
 import (
 	"bufio"
@@ -20,7 +20,7 @@ var (
 	charsCount = 0
 )
 
-func RegularWc(ctx context.Context, wrChannel chan string, filename string) error {
+func RegularCat(ctx context.Context, wrChannel chan string, filename string) error {
 	file, err := os.Open(filename)
 	if err != nil {
 		fmt.Println("Didn't manage to open the file!")
@@ -29,12 +29,11 @@ func RegularWc(ctx context.Context, wrChannel chan string, filename string) erro
 
 	reader := bufio.NewReader(file)
 	go writeLines(wrChannel, reader)
-	go processLines(wrChannel)
+	go readLines(wrChannel)
 
 	select {
 	case <-signalChannel:
 		fmt.Println("Signal caught!")
-		fmt.Println(linesCount, " ", wordsCount, " ", charsCount)
 		return nil
 	case <-ctx.Done():
 		fmt.Println("Program execution ended not having being finished: time out!")
@@ -58,27 +57,10 @@ func writeLines(wChannel chan<- string, reader *bufio.Reader) {
 	close(wChannel)
 }
 
-func processLines(rChannel <-chan string) {
+func readLines(rChannel <-chan string) {
 	for line := range rChannel {
-		waitGroup.Add(1)
-		go func(str string) {
-			aMutex.Lock()
-
-			linesCount++
-
-			for _, word := range str {
-				if word == ' ' {
-					wordsCount++
-				}
-				charsCount++
-			}
-			wordsCount++
-
-			aMutex.Unlock()
-			waitGroup.Done()
-		}(line)
+		fmt.Print(line)
 	}
 
-	waitGroup.Wait()
 	signalChannel <- true
 }
