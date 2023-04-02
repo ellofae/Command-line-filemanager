@@ -32,6 +32,6 @@ func main() {
 			return
 		}
 
-		cat.OptionCat(ctx, wrChannel, os.Args[2:])
+		cat.OptionCat(ctx, os.Args[2:])
 	}
 }

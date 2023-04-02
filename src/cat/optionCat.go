@@ -37,7 +37,7 @@ const (
 	TEMPFILE2 = "./temp2.txt"
 )
 
-func OptionCat(ctx context.Context, wrChannel chan string, args []string) error {
+func OptionCat(ctx context.Context, args []string) error {
 	for _, arg := range args {
 		if ok := strings.Contains(arg, "-"); ok {
 			options = append(options, arg)
