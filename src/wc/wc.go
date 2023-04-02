@@ -66,13 +66,17 @@ func processLines(rChannel <-chan string) {
 
 			linesCount++
 
-			for _, word := range str {
-				if word == ' ' {
-					wordsCount++
+			if str != "\n" {
+				for _, word := range str {
+					if word == ' ' {
+						wordsCount++
+					}
+					charsCount++
 				}
+				wordsCount++
+			} else {
 				charsCount++
 			}
-			wordsCount++
 
 			aMutex.Unlock()
 			waitGroup.Done()
