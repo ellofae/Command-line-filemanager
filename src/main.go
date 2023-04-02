@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-var wrChannel = make(chan string, 5)
+var wrChannel = make(chan string, 5) // buffer channel
 
 func main() {
 	arguments := os.Args

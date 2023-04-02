@@ -1,0 +1,5 @@
+Another interestring file that exists
+In the current directory of a program
+
+This is an example file made for the
+Current user to try and fight it.
